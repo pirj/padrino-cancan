@@ -2,8 +2,14 @@ module Padrino
   module CanCan
     module Helpers
       module ClassMethods
+        include ::CanCan::Ability
+
         def abilities &block
-          block.call
+          @block = block
+        end
+
+        def current_ability account
+          @ability ||= Ability.new(account, registered_abilities, &@block)
         end
 
         def allow roles, &block
@@ -15,11 +21,11 @@ module Padrino
           end
         end
 
-        def registered_abilities
-          @_registered_abilities ||= {}
-        end
-
         private
+          def registered_abilities
+            @_registered_abilities ||= {}
+          end
+
           def allow_role role, &block
             registered_abilities[role] ||= []
             registered_abilities[role] << block
@@ -31,25 +37,16 @@ module Padrino
       end
 
       class Ability
-        def initialize account
-
-          @block.call
+        include ::CanCan::Ability
+        def initialize account, registered_abilities, &block
+          block.call
 
           role = account.role.to_sym rescue :any
-          (@abilities[role] || []).each do |block|
-            block.call
+          (registered_abilities[role] || []).each do |cans|
+            cans.call
           end
         end
       end
     end
-  end
-end
-
-class Ability
-  include ::CanCan::Ability
-
-  def initialize account
-    p "sdfsdfdf #{account}"
-    p "ssd #{registered_mailers.inspect}"
   end
 end
