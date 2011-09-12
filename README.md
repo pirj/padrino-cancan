@@ -12,12 +12,18 @@ Run
 
     bundle
 
-Register in your app:
+Register in your app
 
     class MyApp < Padrino::Application
       register Padrino::CanCan
 
       ...
+
+Define how you want access denied to be handled
+
+      error CanCan::AccessDenied do
+        403
+      end
 
 Add some abilities for some roles
 
@@ -58,7 +64,7 @@ In your controller
       ...
     end
 
-In your views:
+In your views
 
     -if can?(:destroy, Product)
       %li=link_to 'Destroy', url(:products, :destroy, product.id), :confirm => pt(:confirm)
