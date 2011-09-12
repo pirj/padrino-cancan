@@ -27,23 +27,22 @@ Define how you want access denied to be handled
 
 Add some abilities for some roles
 
-      abilities do
-        allow [:any, :external, :manager, :manufacturer, :admin] do
-          can :index, :base
-          can [:index, :view, :find, :search], Product
-        end
-        
-        allow [:external, :manager, :manufacturer, :admin] do
-          can [:edit, :update], :account => account
-        end
-
-        allow [:manager, :admin] do
-          can [:create, :destroy], [Brand, Factory]
-          can :manage, Product
-        end
-
-        ...
+      role [:any, :external, :manager, :manufacturer, :admin] do
+        can :index, :base
+        can [:index, :view, :find, :search], Product
       end
+      
+      role [:external, :manager, :manufacturer, :admin] do
+        can [:edit, :update], :account => account
+      end
+
+      role [:manager, :admin] do
+        can [:create, :destroy], [Brand, Factory]
+        can :manage, Product
+      end
+
+      ...
+    end
 
 refer to [CanCan wiki](https://github.com/ryanb/cancan/wiki/defining-abilities) to learn how to define abilities syntax ("can" method)
 
@@ -79,5 +78,4 @@ Created by [Phil Pirozhkov](https://github.com/pirj)
 
 ## Future
 
-Remove namespace waste
-Be less dynamic, use permission caching
+Remove studid instance_eval. Check for extra initialization which may be cached. Go back to initial abilily/role/can syntax. Write tests.
