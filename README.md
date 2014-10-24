@@ -46,6 +46,7 @@ Add some abilities for some roles
 
 refer to [CanCan wiki](https://github.com/ryanb/cancan/wiki/defining-abilities) to learn how to define abilities syntax ("can" method)
 
+[Working example app.rb](https://gist.github.com/pirj/6e7afad5bbcf354f3e5b)
 
 In your controller
 
